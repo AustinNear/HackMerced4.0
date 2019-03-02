@@ -3,7 +3,7 @@ package HealthyChoices;
 
 import javax.swing.JFrame;
 
-public class Main {
+public class WindowMain {
 	public static JFrame Window = new JFrame();
 	public static Gameplay game = new Gameplay();
 	public static void main (String[] args) {
