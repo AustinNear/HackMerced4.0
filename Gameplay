@@ -18,6 +18,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	private int mainwidth;
     private int mainheight;
     private ImageObserver imageobserver;
+    private int mainx = 300;
+    private int mainy = 300;
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -31,12 +33,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
-	       graphics.drawImage(image, 300, 300, mainwidth, mainheight, Color.WHITE, imageobserver);
+	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, Color.WHITE, imageobserver);
 	       graphics.dispose();
 		
 	}
 	
 	@Override
+	
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		
