@@ -33,11 +33,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void paint(Graphics graphics) {
+		   Color color = new Color(0, 255, 0, 255);
 		   ImageIcon mainboy = new ImageIcon("src/main_character.png");
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
-	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, Color.WHITE, imageobserver);
+	       graphics.setColor(color);
+	       graphics.fillRect(0, 0, 10000, 10000);
+	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, color, imageobserver);
 	       graphics.dispose();
 	}
 	
@@ -46,6 +49,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(right){
 			mainx += 10;
+			repaint();
+		}
+		
+		if(left){
+			mainx += -10;
+			repaint();
+		}
+		
+		if(up){
+			mainy += -10;
+			repaint();
+		}
+		
+		if(down){
+			mainy += 10;
 			repaint();
 		}
 		
@@ -58,12 +76,42 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			up = false;
 			down = false;
 		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			right = false;
+			left = true;
+			up = false;
+			down = false;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			right = false;
+			left = false;
+			up = true;
+			down = false;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			right = false;
+			left = false;
+			up = false;
+			down = true;
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			left = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_W) {
+			up = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			down = false;
 		}
 	}
 	@Override
