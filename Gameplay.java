@@ -1,5 +1,6 @@
 package HealthyChoices;
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void paint(Graphics graphics) {
-		   Color color = new Color(0, 255, 0, 255);
 		   background(graphics);
 		   mainchar(graphics);
 		   if(fired) {
@@ -52,7 +52,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void mainchar(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon mainboy = new ImageIcon("src/main_character.png");
+		   ImageIcon mainboy = new ImageIcon("src/maincharacter.png");
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
@@ -77,8 +77,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		   Color color = new Color(20, 40, 55, 255);
 	       graphics.setColor(color);
 	       graphics.fillRect(0, 0, 10000, 10000);
-	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, color, imageobserver);
-	       graphics.dispose();
 	}
 
 	public void fireball(Graphics graphics) {
@@ -169,6 +167,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		}
 		if(e.getKeyCode() == KeyEvent.VK_A) {
 			left = true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_F) {
+			fired = true;
 		}
 	}
 	
