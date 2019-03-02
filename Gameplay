@@ -20,6 +20,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private ImageObserver imageobserver;
     private int mainx = 300;
     private int mainy = 300;
+    private boolean right = false;
+    private boolean left = false;
+    private boolean up = false;
+    private boolean down = false;
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -41,18 +45,27 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	@Override
 	
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		if(right) {
+			mainx += 30;
+			repaint();
+		}
 		
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == KeyEvent.VK_D) {
+			right = true;
+			left = false;
+			up = false;
+			down = false;
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
+		if(e.getKeyCode() == KeyEvent.VK_D) {
+			right = false;
+		}
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
