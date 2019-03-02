@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.ImageObserver;
-
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.JPanel;
@@ -24,6 +23,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private boolean left = false;
     private boolean up = false;
     private boolean down = false;
+    private boolean fired = false;
+    private int firex =  mainx;
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -32,18 +33,39 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		timer.start();
 	}
 	
+	
 	public void paint(Graphics graphics) {
-		   Color color = new Color(0, 255, 0, 255);
+		   background(graphics);
+		   mainchar(graphics);
+		   if(fired) {
+				fireball(graphics);
+			}
+		   graphics.dispose();
+	}
+	
+	public void mainchar(Graphics graphics) {
+		   Color color = new Color(20, 40, 55, 0);
 		   ImageIcon mainboy = new ImageIcon("src/main_character.png");
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
-	       graphics.setColor(color);
-	       graphics.fillRect(0, 0, 10000, 10000);
 	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, color, imageobserver);
-	       graphics.dispose();
 	}
 	
+	public void background(Graphics graphics) {
+		   Color color = new Color(20, 40, 55, 255);
+	       graphics.setColor(color);
+	       graphics.fillRect(0, 0, 10000, 10000);
+	}
+	
+	public void fireball(Graphics graphics) {
+		   Color color = new Color(20, 40, 55, 0);
+		   ImageIcon mainboy = new ImageIcon("src/fireball.png");
+	       image = mainboy.getImage(); 
+	       mainwidth = image.getWidth(null);
+	       mainheight = image.getHeight(null);
+	       graphics.drawImage(image, firex, mainy, mainwidth, mainheight, color, imageobserver);
+	}
 	@Override
 	
 	public void actionPerformed(ActionEvent e) {
@@ -66,6 +88,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			mainy += 10;
 			repaint();
 		}
+		
+		if(fired) {
+				firex += 20;
+				repaint();		}
+				if(firex == 1000) {
+					fired = false;
+					firex = mainx;
+				}
 		
 	}
 	@Override
@@ -96,6 +126,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			left = false;
 			up = false;
 			down = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_F) {
+			fired = true;
 		}
 	}
 	@Override
