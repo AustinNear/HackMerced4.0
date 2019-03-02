@@ -1,18 +1,60 @@
 package HealthyChoices;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.ImageObserver;
 
-
-import javax.swing.JFrame;
-
-public class WindowMain {
-	public static JFrame Window = new JFrame();
-	public static Gameplay game = new Gameplay();
-	public static void main (String[] args) {
-		Window.setBounds(0, 0, 905, 700);	
-		Window.setVisible(true);		
-		Window.setResizable(false);
-		Window.setTitle("Healthy Choices");
-		Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Window.add(game);
-		Window.setVisible(true);
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+public class Gameplay extends JPanel implements KeyListener, ActionListener{
+	private Timer timer;
+	private int delay = 75;
+	private Image image;
+	private int mainwidth;
+    private int mainheight;
+    private ImageObserver imageobserver;
+	public Gameplay() {
+		addKeyListener(this);					//Makes the key listener and timer when the game object is created
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
+		timer = new Timer(delay, this);
+		timer.start();
 	}
+	
+	public void paint(Graphics graphics) {
+		   ImageIcon mainboy = new ImageIcon("src/resources/maincharacter.png");
+	       image = mainboy.getImage(); 
+	       mainwidth = image.getWidth(null);
+	       mainheight = image.getHeight(null);
+	       graphics.drawImage(image, 300, 300, mainwidth, mainheight, Color.BLACK, imageobserver);
+	       graphics.dispose();
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
