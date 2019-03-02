@@ -16,6 +16,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	private Image image;
 	private int mainwidth;
     private int mainheight;
+    private int backwidth;
+    private int backheight;
     private ImageObserver imageobserver;
     private int mainx = 300;
     private int mainy = 300;
@@ -41,11 +43,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 				fireball(graphics);
 			}
 		   graphics.dispose();
+		   repaint();
 	}
 	
 	public void mainchar(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon mainboy = new ImageIcon("src/main_character.png");
+		   ImageIcon mainboy = new ImageIcon("src/WalkCycleRight.gif");
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
@@ -53,9 +56,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void background(Graphics graphics) {
-		   Color color = new Color(20, 40, 55, 255);
-	       graphics.setColor(color);
-	       graphics.fillRect(0, 0, 10000, 10000);
+		   Color color = new Color(20, 40, 55, 0);
+		   ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
+	       image = background.getImage(); 
+	       backwidth = image.getWidth(null);
+	       backheight = image.getHeight(null);
+	       graphics.drawImage(image, 0, 0, 905, 700, color, imageobserver);
 	}
 	
 	public void fireball(Graphics graphics) {
@@ -65,28 +71,72 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
 	       graphics.drawImage(image, firex, mainy, mainwidth, mainheight, color, imageobserver);
+	       repaint();
+	}
+	
+	public void move(int xDir, int yDir) {
+		mainx += xDir;
+		mainy += yDir;
+		repaint();
 	}
 	@Override
 	
 	public void actionPerformed(ActionEvent e) {
-		if(right){
-			mainx += 10;
-			repaint();
+		if(right){ //if right and possibly some button pressed simultaneously, move this direction.
+			if(up) { //right and up, move northeast.
+				move(10, -10);
+			}
+			else if(down) { //right and down, move southeast
+				move(10, 10);
+			}
+			else if(left) { //right and left, stay in place.
+				move(0, 0);
+			}
+			else { //else, right is the only key pressed, so move right only
+				move(10, 0);
+			}
 		}
-		
-		if(left){
-			mainx += -10;
-			repaint();
+		else if(left) { //if left and possibly some button pressed simultaneously, move this direction.
+			if(up) { //left and up, move northwest
+				move(-10, -10);
+			}
+			else if(down) { //left and down, move southwest
+				move(-10, 10);
+			}
+			else if(right) { //left and right, stay in place.
+				move(0, 0);
+			}
+			else { //move left if that's the only key pressed
+				move(-10, 0);
+			}
 		}
-		
-		if(up){
-			mainy += -10;
-			repaint();
+		else if(up) { //if up and possibly some button pressed simultaneously, move this direction.
+			if(down) { //up and down, stay in place
+				move(0, 0);
+			}
+			else if(right) { //up and right, move northeast
+				move(10, -10);
+			}
+			else if(left) { //up and left, move northwest
+				move(-10, -10);
+			}
+			else { 
+				move(0, -10); //move up if up is the only key pressed
+			}
 		}
-		
-		if(down){
-			mainy += 10;
-			repaint();
+		else if(down) {
+			if(up) { //down and up, stay in place.
+				move(0, 0);
+			}
+			else if(right) { //down and right, move southeast
+				move(10, 10);
+			}
+			else if(left) { //down and left, move southwest
+				move(-10, 10);
+			}
+			else { //only down is pressed, so move down
+				move(0, 10);
+			}
 		}
 		
 		if(fired) {
@@ -101,31 +151,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_D) {
-			right = true;
-			left = false;
-			up = false;
-			down = false;
+			right = true;	
 		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_A) {
-			right = false;
-			left = true;
-			up = false;
-			down = false;
-		}
-		
 		if(e.getKeyCode() == KeyEvent.VK_W) {
-			right = false;
-			left = false;
 			up = true;
-			down = false;
 		}
-		
 		if(e.getKeyCode() == KeyEvent.VK_S) {
-			right = false;
-			left = false;
-			up = false;
 			down = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_A) {
+			left = true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_F) {
+			fired = true;
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_F) {
@@ -135,17 +173,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		if(e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_A) {
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			down = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_W) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
 			up = false;
-		}
-		if(e.getKeyCode() == KeyEvent.VK_S) {
-			down = false;
 		}
 	}
 	@Override
