@@ -87,9 +87,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	    	   mainx = 0;
 	    	   mainy = 0;
 	    	   end = false;
-	    	   foodspeed = 0;
+	    	   foodspeed = -1;
 	    	   foodwidth = 0;
 	    	   foodheight = 0;
+	    	   mainboy = new ImageIcon("src/fullfacechange.gif");
+	    	   mainim = mainboy.getImage();
+	    	   
 	       }
 	    }
 	    graphics.drawImage(image, fallxcoords[place], fallycoords, foodwidth, foodheight, color, imageobserver);
