@@ -32,7 +32,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private boolean up = false;
     private boolean down = false;
     private boolean fired = false;
-    private int firex =  mainx;
+    private int firex =  mainx; //the actual x coordinate of the fireball being shot.
+    private int firey = mainy;
+    private int distanceFired = 0;
     private int stage = 0;
     private boolean falling = false;
     private boolean deployed = false;
@@ -150,95 +152,102 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	       backheight = image.getHeight(null);
 	       graphics.drawImage(image, 0, 0, 905, 700, color, imageobserver);
 	}
-	
+
 	public void fireball(Graphics graphics) {
-		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon mainboy = new ImageIcon("src/fireball.png");
-	       image = mainboy.getImage(); 
-	       firewidth = image.getWidth(null);
-	       fireheight = image.getHeight(null);
-	       graphics.drawImage(image, firex, mainy, firewidth, fireheight, color, imageobserver);
-	       
+		Color color = new Color(20, 40, 55, 0);
+		ImageIcon fireball = new ImageIcon("src/fireball.png");
+		image = fireball.getImage(); 
+		firewidth = image.getWidth(null);
+		fireheight = image.getHeight(null);
+		graphics.drawImage(image, firex, firey, firewidth, fireheight, color, imageobserver);
+
 	}
-	
+
 	public void move(int xDir, int yDir) {
 		mainboy = new ImageIcon("src/warker.gif");
 		mainim = mainboy.getImage();
 		mainx += xDir;
 		mainy += yDir;
-		
+
 	}
 	@Override
-	
+
 	public void actionPerformed(ActionEvent e) {
-		
 		if(end) {
-		if(right){ //if right and possibly some button pressed simultaneously, move this direction.
-			if(up) { //right and up, move northeast.
-				move(10, -10);
-			}
-			else if(down) { //right and down, move southeast
-				move(10, 10);
-			}
-			else if(left) { //right and left, stay in place.
-				move(0, 0);
-			}
-			else { //else, right is the only key pressed, so move right only
-				move(10, 0);
-			}
-		}
-		else if(left) { //if left and possibly some button pressed simultaneously, move this direction.
-			if(up) { //left and up, move northwest
-				move(-10, -10);
-			}
-			else if(down) { //left and down, move southwest
-				move(-10, 10);
-			}
-			else if(right) { //left and right, stay in place.
-				move(0, 0);
-			}
-			else { //move left if that's the only key pressed
-				move(-10, 0);
-			}
-		}
-		else if(up) { //if up and possibly some button pressed simultaneously, move this direction.
-			if(down) { //up and down, stay in place
-				move(0, 0);
-			}
-			else if(right) { //up and right, move northeast
-				move(10, -10);
-			}
-			else if(left) { //up and left, move northwest
-				move(-10, -10);
-			}
-			else { 
-				move(0, -10); //move up if up is the only key pressed
-			}
-		}
-		else if(down) {
-			if(up) { //down and up, stay in place.
-				move(0, 0);
-			}
-			else if(right) { //down and right, move southeast
-				move(10, 10);
-			}
-			else if(left) { //down and left, move southwest
-				move(-10, 10);
-			}
-			else { //only down is pressed, so move down
-				move(0, 10);
-			}
-		}
-		
-		if(fired) {
-				firex += 20;
-				repaint();		}
-				if(firex == 1000) {
-					fired = false;
-					firex = mainx;
+			if(fired) {
+				int currX = mainx;
+				int currY = mainy;
+				if(distanceFired == 0) {
+					firex = currX + 50;
+					firey = currY;
 				}
-		
-	}
+				firex += 50;
+				firey += 0;
+				distanceFired += 50;
+				if(distanceFired > 300) {
+					fired = false;
+					distanceFired = 0;
+					firex = mainx;
+					firey = mainy;
+				}
+			}
+			if(right){ //if right and possibly some button pressed simultaneously, move this direction.
+				if(up) { //right and up, move northeast.
+					move(10, -10);
+				}
+				else if(down) { //right and down, move southeast
+					move(10, 10);
+				}
+				else if(left) { //right and left, stay in place.
+					move(0, 0);
+				}
+				else { //else, right is the only key pressed, so move right only
+					move(10, 0);
+				}
+			}
+			else if(left) { //if left and possibly some button pressed simultaneously, move this direction.
+				if(up) { //left and up, move northwest
+					move(-10, -10);
+				}
+				else if(down) { //left and down, move southwest
+					move(-10, 10);
+				}
+				else if(right) { //left and right, stay in place.
+					move(0, 0);
+				}
+				else { //move left if that's the only key pressed
+					move(-10, 0);
+				}
+			}
+			else if(up) { //if up and possibly some button pressed simultaneously, move this direction.
+				if(down) { //up and down, stay in place
+					move(0, 0);
+				}
+				else if(right) { //up and right, move northeast
+					move(10, -10);
+				}
+				else if(left) { //up and left, move northwest
+					move(-10, -10);
+				}
+				else { 
+					move(0, -10); //move up if up is the only key pressed
+				}
+			}
+			else if(down) {
+				if(up) { //down and up, stay in place.
+					move(0, 0);
+				}
+				else if(right) { //down and right, move southeast
+					move(10, 10);
+				}
+				else if(left) { //down and left, move southwest
+					move(-10, 10);
+				}
+				else { //only down is pressed, so move down
+					move(0, 10);
+				}
+			}
+		}
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
