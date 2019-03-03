@@ -19,14 +19,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private int backwidth;
     private int backheight;
     private ImageObserver imageobserver;
-    private int mainx = 300;
-    private int mainy = 300;
+    private int mainx = 100;
+    private int mainy = 500;
     private boolean right = false;
     private boolean left = false;
     private boolean up = false;
     private boolean down = false;
     private boolean fired = false;
     private int firex =  mainx;
+    ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
+    ImageIcon mainboy = new ImageIcon("src/eggdefaultstance.png");
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -48,7 +50,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void mainchar(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon mainboy = new ImageIcon("src/WalkCycleRight.gif");
 	       image = mainboy.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
@@ -57,7 +58,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void background(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
 	       image = background.getImage(); 
 	       backwidth = image.getWidth(null);
 	       backheight = image.getHeight(null);
@@ -71,13 +71,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
 	       graphics.drawImage(image, firex, mainy, mainwidth, mainheight, color, imageobserver);
-	       repaint();
+	       
 	}
 	
 	public void move(int xDir, int yDir) {
+		mainboy = new ImageIcon("src/WalkCycleRight.gif");
 		mainx += xDir;
 		mainy += yDir;
-		repaint();
+		
 	}
 	@Override
 	
@@ -175,15 +176,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
+			mainboy = new ImageIcon("src/eggdefaultstance.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			down = false;
+			mainboy = new ImageIcon("src/eggdefaultstance.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
+			mainboy = new ImageIcon("src/eggdefaultstance.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_W) {
 			up = false;
+			mainboy = new ImageIcon("src/eggdefaultstance.png");
 		}
 	}
 	@Override
