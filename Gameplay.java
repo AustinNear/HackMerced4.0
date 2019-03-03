@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.ImageObserver;
+import java.util.Random;
+
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.JPanel;
@@ -14,25 +16,36 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	private Timer timer;
 	private int delay = 75;
 	private Image image;
-	private int mainwidth;
-    private int mainheight;
     private int backwidth;
     private int backheight;
+    private int fireheight;
+    private int firewidth;
+    private int foodwidth;
+    private int foodheight;
+    private int place;
     private ImageObserver imageobserver;
-    private int mainx = 100;
+    private int mainx = 50;
     private int mainy = 500;
     private boolean right = false;
     private boolean left = false;
     private boolean up = false;
     private boolean down = false;
     private boolean fired = false;
-    private int initFireX = mainx;
-    private int firex =  mainx;
+    private int firex =  mainx; //the actual x coordinate of the fireball being shot.
     private int firey = mainy;
     private int distanceFired = 0;
+    private int stage = 0;
+    private boolean falling = false;
+    private boolean deployed = false;
+    private int fallycoords = 0;
     ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
-    ImageIcon mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
-    ImageIcon fireball = new ImageIcon("src/fireball.png");
+    ImageIcon mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
+    ImageIcon food = new ImageIcon("src/darkcolasmall.png");
+    private Image mainim = mainboy.getImage();
+    private int mainwidth = mainim.getWidth(null);
+    private int mainheight = mainim.getHeight(null);
+    private boolean end = true;
+    private int foodspeed = 2;
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -45,24 +58,70 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	public void paint(Graphics graphics) {
 		background(graphics);   
 		mainchar(graphics);
-		if(fired) {
-			fireball(graphics);
+		   if(fired) {
+				fireball(graphics);
+			}
+		if(falling){
+			fallgame(graphics);
 		}
 		graphics.dispose();
 		repaint();
 	}
 	
+	public void fallgame(Graphics graphics) {
+		Random rnum = new Random();
+		int[] fallxcoords = {100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900};
+        if(deployed == false)
+			place = rnum.nextInt(16);
+        deployed = true;
+        Color color = new Color(20, 40, 55, 0);
+	    image = food.getImage(); 
+	    foodwidth = image.getWidth(null);
+	    foodheight = image.getHeight(null);
+	    if(mainx + mainwidth  >= fallxcoords[place] && mainx <= fallxcoords[place] && mainy + mainheight >= fallycoords && mainy <= fallycoords) {
+	       if(mainheight < 1000)
+	    	   mainheight = mainheight+20;
+	       if(mainwidth<1000)
+	    	   mainwidth = mainwidth+20;
+	       if(mainwidth >= 1000 && mainheight >= 1000) {
+	    	   mainwidth = 905;
+	    	   mainheight = 700;
+	    	   mainx = 0;
+	    	   mainy = 0;
+	    	   end = false;
+	    	   foodspeed = 0;
+	    	   foodwidth = 0;
+	    	   foodheight = 0;
+	       }
+	    }
+	    graphics.drawImage(image, fallxcoords[place], fallycoords, foodwidth, foodheight, color, imageobserver);
+	    fallycoords += foodspeed;
+	    if(fallycoords >= 700) {
+	    	fallycoords = 0;
+	    	deployed = false;
+	    }
+        
+		
+	}
 	
 	public void mainchar(Graphics graphics) {
-		   Color color = new Color(20, 40, 55, 0);
-	       image = mainboy.getImage(); 
-	       mainwidth = image.getWidth(null);
-	       mainheight = image.getHeight(null);
-	       graphics.drawImage(image, mainx, mainy, mainwidth, mainheight, color, imageobserver);
+		   Color color = new Color(20, 40, 55, 0); 
+	       graphics.drawImage(mainim, mainx, mainy, mainwidth, mainheight, color, imageobserver);
 	}
 	
 	public void background(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
+		   if(mainx > 850 && stage == 0) {
+			   background = new ImageIcon("src/level2.png"); //test image while next is being made
+			   mainx = 50;
+			   stage++;
+		   }
+		   if(mainx > 850 && stage == 1) {
+			   background = new ImageIcon("src/level3.png"); //test image while next is being made
+			   mainx = 50;
+			   stage++;
+			   falling = true;
+		   }
 	       image = background.getImage(); 
 	       backwidth = image.getWidth(null);
 	       backheight = image.getHeight(null);
@@ -73,29 +132,37 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		   Color color = new Color(20, 40, 55, 0);
 		   ImageIcon fireball = new ImageIcon("src/fireball.png");
 	       image = fireball.getImage(); 
-	       mainwidth = image.getWidth(null);
-	       mainheight = image.getHeight(null);
-	       graphics.drawImage(image, firex, firey, mainwidth, mainheight, color, imageobserver);
+	       firewidth = image.getWidth(null);
+	       fireheight = image.getHeight(null);
+	       graphics.drawImage(image, firex, firey, firewidth, fireheight, color, imageobserver);
 	       
 	}
 	
 	public void move(int xDir, int yDir) {
 		mainboy = new ImageIcon("src/warker.gif");
+		mainim = mainboy.getImage();
 		mainx += xDir;
 		mainy += yDir;
-		
+
 	}
 	@Override
-	
+
 	public void actionPerformed(ActionEvent e) {
 		if(fired) {
+			int currX = mainx;
+			int currY = mainy;
+			if(distanceFired == 0) {
+				firex = currX;
+				firey = currY;
+			}
 			firex += 30;
+			firey += 0;
 			distanceFired += 30;
-			if(distanceFired > (initFireX + 150)) {
+			if(distanceFired > 150) {
 				fired = false;
+				distanceFired = 0;
 				firex = mainx;
 				firey = mainy;
-				distanceFired = 0;
 			}
 		}
 		if(right){ //if right and possibly some button pressed simultaneously, move this direction.
@@ -154,12 +221,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 				move(0, 10);
 			}
 		}
-
+		
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_D) {
-			right = true;	
+			right = true;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_W) {
 			up = true;
@@ -180,19 +247,23 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
-			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
+			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
+			mainim = mainboy.getImage();
 		}
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			down = false;
-			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
+			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
+			mainim = mainboy.getImage();
 		}
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
-			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
+			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
+			mainim = mainboy.getImage();
 		}
 		if (e.getKeyCode() == KeyEvent.VK_W) {
 			up = false;
-			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
+			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
+			mainim = mainboy.getImage();
 		}
 	}
 	@Override
