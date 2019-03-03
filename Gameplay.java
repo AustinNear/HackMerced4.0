@@ -19,7 +19,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private int backwidth;
     private int backheight;
     private ImageObserver imageobserver;
-    private int mainx = 100;
+    private int mainx = 50;
     private int mainy = 500;
     private boolean right = false;
     private boolean left = false;
@@ -44,8 +44,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		   if(fired) {
 				fireball(graphics);
 			}
-		   graphics.dispose();
-		   repaint();
+		graphics.dispose();
+		repaint();
 	}
 	
 	
@@ -59,6 +59,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void background(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
+		   if(mainx > 850) {
+			   background = new ImageIcon("src/level2.png"); //test image while next is being made
+			   mainx = 50;
+		   }
 	       image = background.getImage(); 
 	       backwidth = image.getWidth(null);
 	       backheight = image.getHeight(null);
