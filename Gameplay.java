@@ -28,7 +28,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private boolean fired = false;
     private int firex =  mainx;
     ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
-    ImageIcon mainboy = new ImageIcon("src/eggdefaultstance.png");
+    ImageIcon mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -39,14 +39,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	
 	public void paint(Graphics graphics) {
-		   background(graphics);
-		   mainchar(graphics);
+		background(graphics);   
+		mainchar(graphics);
 		   if(fired) {
 				fireball(graphics);
 			}
 		   graphics.dispose();
 		   repaint();
 	}
+	
 	
 	public void mainchar(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
@@ -75,7 +76,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void move(int xDir, int yDir) {
-		mainboy = new ImageIcon("src/WalkCycleRight.gif");
+		mainboy = new ImageIcon("src/warker.gif");
 		mainx += xDir;
 		mainy += yDir;
 		
@@ -163,9 +164,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		if(e.getKeyCode() == KeyEvent.VK_A) {
 			left = true;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_F) {
-			fired = true;
-		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_F) {
 			fired = true;
@@ -176,19 +174,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
-			mainboy = new ImageIcon("src/eggdefaultstance.png");
+			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			down = false;
-			mainboy = new ImageIcon("src/eggdefaultstance.png");
+			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
-			mainboy = new ImageIcon("src/eggdefaultstance.png");
+			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
 		}
 		if (e.getKeyCode() == KeyEvent.VK_W) {
 			up = false;
-			mainboy = new ImageIcon("src/eggdefaultstance.png");
+			mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
 		}
 	}
 	@Override
