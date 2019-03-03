@@ -19,16 +19,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private int backwidth;
     private int backheight;
     private ImageObserver imageobserver;
-    private int mainx = 50;
+    private int mainx = 100;
     private int mainy = 500;
     private boolean right = false;
     private boolean left = false;
     private boolean up = false;
     private boolean down = false;
     private boolean fired = false;
+    private int initFireX = mainx;
     private int firex =  mainx;
+    private int firey = mainy;
+    private int distanceFired = 0;
     ImageIcon background = new ImageIcon("src/level1animatedoptimized.gif");
     ImageIcon mainboy = new ImageIcon("src/eggdefaultstancesmall.png");
+    ImageIcon fireball = new ImageIcon("src/fireball.png");
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -41,9 +45,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	public void paint(Graphics graphics) {
 		background(graphics);   
 		mainchar(graphics);
-		   if(fired) {
-				fireball(graphics);
-			}
+		if(fired) {
+			fireball(graphics);
+		}
 		graphics.dispose();
 		repaint();
 	}
@@ -59,10 +63,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void background(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   if(mainx > 850) {
-			   background = new ImageIcon("src/level2.png"); //test image while next is being made
-			   mainx = 50;
-		   }
 	       image = background.getImage(); 
 	       backwidth = image.getWidth(null);
 	       backheight = image.getHeight(null);
@@ -71,11 +71,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	
 	public void fireball(Graphics graphics) {
 		   Color color = new Color(20, 40, 55, 0);
-		   ImageIcon mainboy = new ImageIcon("src/fireball.png");
-	       image = mainboy.getImage(); 
+		   ImageIcon fireball = new ImageIcon("src/fireball.png");
+	       image = fireball.getImage(); 
 	       mainwidth = image.getWidth(null);
 	       mainheight = image.getHeight(null);
-	       graphics.drawImage(image, firex, mainy, mainwidth, mainheight, color, imageobserver);
+	       graphics.drawImage(image, firex, firey, mainwidth, mainheight, color, imageobserver);
 	       
 	}
 	
@@ -88,6 +88,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	@Override
 	
 	public void actionPerformed(ActionEvent e) {
+		if(fired) {
+			firex += 30;
+			distanceFired += 30;
+			if(distanceFired > (initFireX + 150)) {
+				fired = false;
+				firex = mainx;
+				firey = mainy;
+				distanceFired = 0;
+			}
+		}
 		if(right){ //if right and possibly some button pressed simultaneously, move this direction.
 			if(up) { //right and up, move northeast.
 				move(10, -10);
@@ -144,15 +154,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 				move(0, 10);
 			}
 		}
-		
-		if(fired) {
-				firex += 20;
-				repaint();		}
-				if(firex == 1000) {
-					fired = false;
-					firex = mainx;
-				}
-		
+
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
