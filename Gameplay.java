@@ -1,5 +1,6 @@
 package HealthyChoices;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,8 +45,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private int mainheight = mainim.getHeight(null);
     private boolean end = true;
     private int foodspeed = 2;
-	public Gameplay() {
-		addKeyListener(this);					//Makes the key listener and timer when the game object is created
+    
+    public Gameplay() {
+    	addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 		timer = new Timer(delay, this);
@@ -62,8 +64,28 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 		if(falling){
 			fallgame(graphics);
 		}
+		stagetext(graphics);
 		graphics.dispose();
 		repaint();
+	}
+	
+	public void stagetext(Graphics graphics) {
+		graphics.setColor(Color.WHITE);
+		graphics.setFont(new Font("arial", Font.BOLD, 15));
+		if(stage == 0) {
+			graphics.drawString("As you can see, this gyrodynetic hypersphere is real, an actual holotopic space/time with the very same attributes we have ", 10, 40);
+			graphics.drawString("in the 3rd dimension, such as distance, time, gravity, inertia, acceleration and awareness.", 10, 60);
+		}
+		if(stage == 1) {
+			graphics.drawString("We're just realizing the sympaktic method to actually activate zero point equivalence where the 4th, 5th, 6th, 7th, 8th and 9th dimensional perpendicular axis is to be found when fathoming, floating, flowing and frolicking between the coherent and convergent multitudes of orthogonal quantum latency. ", 10, 50);
+			graphics.drawString("dimensional perpendicular axis is to be found when fathoming, floating, flowing and frolicking between the coherent and convergent multitudes of orthogonal quantum latency. ", 10, 70);
+			graphics.drawString("convergent multitudes of orthogonal quantum latency. ", 10, 90);
+		}
+		if(stage == 2) {
+			graphics.drawString(" This intractable enigma, created by encountering the vast expanses of orthogonal freedom to travel around in and discover ", 10, 40);
+			graphics.drawString("throughout where to combine vorticular directions and symplectic entanglements that happen to occur when orchestrating ", 10, 60);
+			graphics.drawString("a perpendicular plethora in this apparent and yet invisible locality, is beyond comprehension.", 10, 80);
+		}
 	}
 	
 	public void fallgame(Graphics graphics) {
@@ -90,7 +112,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	    	   foodspeed = -1;
 	    	   foodwidth = 0;
 	    	   foodheight = 0;
-	    	   mainboy = new ImageIcon("src/fullfacechange.gif");
+	    	   mainboy = new ImageIcon("src/fullfacechangerfinal.gif");
 	    	   mainim = mainboy.getImage();
 	    	   
 	       }
@@ -220,6 +242,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(end) {
 		if(e.getKeyCode() == KeyEvent.VK_D) {
 			right = true;	
 		}
@@ -237,9 +260,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			fired = true;
 		}
 	}
+	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		if(end) {
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
 			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
@@ -260,6 +284,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 			mainboy = new ImageIcon("src/eggdefaultsmallsmallright.png");
 			mainim = mainboy.getImage();
 		}
+	}
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
