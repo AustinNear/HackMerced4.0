@@ -1,0 +1,10 @@
+private int count = 0;
+	private boolean roomcleared = false;
+	public void mouseClicked(MouseEvent e) {     //Click on treasure chest twice to activate an event
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			count++;
+			if (count == 2) {
+				roomcleared = true;
+			}
+		}
+	}
