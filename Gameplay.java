@@ -42,6 +42,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private Image mainim = mainboy.getImage();
     private int mainwidth = mainim.getWidth(null);
     private int mainheight = mainim.getHeight(null);
+    private boolean end = true;
+    private int foodspeed = 2;
 	public Gameplay() {
 		addKeyListener(this);					//Makes the key listener and timer when the game object is created
 		setFocusable(true);
@@ -79,9 +81,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	    	   mainheight = mainheight+20;
 	       if(mainwidth<1000)
 	    	   mainwidth = mainwidth+20;
+	       if(mainwidth >= 1000 && mainheight >= 1000) {
+	    	   mainwidth = 905;
+	    	   mainheight = 700;
+	    	   mainx = 0;
+	    	   mainy = 0;
+	    	   end = false;
+	    	   foodspeed = 0;
+	    	   foodwidth = 0;
+	    	   foodheight = 0;
+	       }
 	    }
 	    graphics.drawImage(image, fallxcoords[place], fallycoords, foodwidth, foodheight, color, imageobserver);
-	    fallycoords += 2;
+	    fallycoords += foodspeed;
 	    if(fallycoords >= 700) {
 	    	fallycoords = 0;
 	    	deployed = false;
@@ -134,6 +146,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 	@Override
 	
 	public void actionPerformed(ActionEvent e) {
+		
+		if(end) {
 		if(right){ //if right and possibly some button pressed simultaneously, move this direction.
 			if(up) { //right and up, move northeast.
 				move(10, -10);
@@ -199,6 +213,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
 					firex = mainx;
 				}
 		
+	}
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
